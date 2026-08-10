@@ -1,169 +1,169 @@
-# 多智能体项目管理模拟系统
+# Multi-Agent Project Management Simulation System
 
-这是一个基于大语言模型的多智能体系统，用于模拟完整的软件项目管理流程。
+This is a large language model (LLM) based multi-agent system that simulates a complete software project management workflow.
 
-## 系统概述
+## System Overview
 
-### 核心特性
+### Core Features
 
-- **三个智能体角色**：项目发起人、项目经理、项目组成员
-- **六个项目阶段**：预启动、启动、计划、执行、控制、结束
-- **完整的项目管理流程**：从需求提出到最终交付
-- **挣值分析（EVM）**：跟踪项目成本和进度绩效
-- **共享数据库**：所有智能体共享的项目信息存储
-- **记忆管理**：每个智能体维护对话历史和工作记忆
+- **Three agent roles**: project sponsor, project manager, and team members
+- **Six project phases**: pre-initiation, initiation, planning, execution, control, and closure
+- **Complete project management workflow**: from requirement elicitation to final delivery
+- **Earned value management (EVM)**: tracks project cost and schedule performance
+- **Shared database**: centralized project information storage accessed by all agents
+- **Memory management**: each agent maintains its own conversation history and working memory
 
-### 系统架构
+### System Architecture
 
 ```
 ProjectManagement/
-├── agents/                 # 智能体模块
-│   ├── base_agent.py      # Agent基类
-│   ├── sponsor.py         # 项目发起人
-│   ├── manager.py         # 项目经理
-│   └── team_member.py     # 项目组成员
-├── database/              # 数据库模块
-│   └── shared_db.py       # 共享数据库
-├── workflow/              # 工作流模块
-│   └── engine.py          # 工作流引擎
-├── utils/                 # 工具模块
-│   ├── llm_client.py     # LLM客户端
-│   └── document_generator.py  # 文档生成器
-├── simulation/            # 模拟结果存储
-│   └── {project_code}/    # 每次模拟的结果
-│       └── deliverables/  # 交付物
-├── config.py             # 配置文件
-├── main.py               # 主程序
-├── requirements.txt      # 依赖包
-└── README.md            # 本文件
+├── agents/                 # Agent modules
+│   ├── base_agent.py      # Base agent class
+│   ├── sponsor.py         # Project sponsor
+│   ├── manager.py         # Project manager
+│   └── team_member.py     # Team member
+├── database/              # Database module
+│   └── shared_db.py       # Shared database
+├── workflow/              # Workflow module
+│   └── engine.py          # Workflow engine
+├── utils/                 # Utility modules
+│   ├── llm_client.py     # LLM client
+│   └── document_generator.py  # Document generator
+├── simulation/            # Simulation result storage
+│   └── {project_code}/    # Results of each simulation
+│       └── deliverables/  # Deliverables
+├── config.py             # Configuration file
+├── main.py               # Main program
+├── requirements.txt      # Dependencies
+└── README.md            # This file
 ```
 
-## 项目阶段
+## Project Phases
 
-### 第一阶段：预启动（Pre-initiation）
+### Phase 1: Pre-initiation
 
-- **参与者**：项目发起人、项目经理
-- **活动**：
-  - 项目发起人陈述项目需求
-  - 项目经理与发起人沟通需求
-  - 项目经理起草项目章程
-- **交付物**：项目章程
+- **Participants**: project sponsor, project manager
+- **Activities**:
+  - The project sponsor states the project requirements
+  - The project manager discusses the requirements with the sponsor
+  - The project manager drafts the project charter
+- **Deliverable**: project charter
 
-### 第二阶段：启动（Initiation）
+### Phase 2: Initiation
 
-- **参与者**：项目发起人、项目经理、项目组成员
-- **活动**：
-  - 召开项目启动会议
-  - 各方讨论项目约束
-  - 确定三大约束：成本（Cost）、范围（Scope）、进度（Schedule）
-- **交付物**：会议记录、三大约束文档
+- **Participants**: project sponsor, project manager, team members
+- **Activities**:
+  - Hold the project kick-off meeting
+  - All parties discuss the project constraints
+  - Define the triple constraints: cost, scope, and schedule
+- **Deliverables**: meeting minutes, triple constraints document
 
-### 第三阶段：计划（Planning）
+### Phase 3: Planning
 
-- **参与者**：项目经理（主导）
-- **活动**：
-  - 根据项目章程和三大约束创建WBS
-  - 制定成本管理计划
-  - 制定范围管理计划
-  - 制定进度管理计划
-- **交付物**：WBS、三大管理计划
+- **Participants**: project manager (lead)
+- **Activities**:
+  - Create the WBS based on the project charter and the triple constraints
+  - Develop the cost management plan
+  - Develop the scope management plan
+  - Develop the schedule management plan
+- **Deliverables**: WBS, three management plans
 
-### 第四阶段：执行（Execution）
+### Phase 4: Execution
 
-- **参与者**：项目组成员、项目经理、项目发起人
-- **活动**：
-  - 项目组成员开发代码
-  - 向项目经理报告进展
-  - 与项目发起人讨论产品
-- **交付物**：代码文件、进展报告
+- **Participants**: team members, project manager, project sponsor
+- **Activities**:
+  - Team members develop code
+  - Report progress to the project manager
+  - Discuss the product with the project sponsor
+- **Deliverables**: code files, progress reports
 
-### 第五阶段：控制（Control）
+### Phase 5: Control
 
-- **参与者**：项目经理（主导）
-- **活动**：
-  - 听取各方意见
-  - 更新WBS和管理计划
-  - 记录工作效果（成本、完成量）
-  - 进行挣值分析（EVM）
-- **交付物**：更新的管理计划、EVM报告
+- **Participants**: project manager (lead)
+- **Activities**:
+  - Gather feedback from all parties
+  - Update the WBS and management plans
+  - Record work performance (cost, completed work)
+  - Perform earned value analysis (EVM)
+- **Deliverables**: updated management plans, EVM reports
 
-### 循环执行
+### Loop Execution
 
-第四和第五阶段循环执行，直到：
-1. 项目发起人接受当前版本（最多循环3次）
-2. 或达到schedule时间限制
+Phases 4 and 5 run in a loop until:
+1. The project sponsor accepts the current version (up to 3 loops)
+2. Or the schedule time limit is reached
 
-### 第六阶段：结束（Closure）
+### Phase 6: Closure
 
-- **参与者**：全体
-- **活动**：
-  - 整理所有交付物
-  - 生成项目总结报告
-  - 项目发起人最终验收
-- **交付物**：
-  - 所有项目文档
-  - 所有代码文件
-  - 项目数据库（JSON）
-  - 项目总结报告
-  - 最终验收意见
+- **Participants**: everyone
+- **Activities**:
+  - Organize all deliverables
+  - Generate the project summary report
+  - Final acceptance by the project sponsor
+- **Deliverables**:
+  - All project documents
+  - All code files
+  - Project database (JSON)
+  - Project summary report
+  - Final acceptance opinion
 
-## 安装和使用
+## Installation and Usage
 
-### 环境要求
+### Environment Requirements
 
 - Python 3.8+
-- 网络连接（用于调用外部LLM API）
+- Network connection (for calling external LLM APIs)
 
-### 安装依赖
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 运行系统
+### Run the System
 
-#### 基本用法（AI自动生成项目需求）
+#### Basic usage (AI auto-generates project requirements)
 
 ```bash
 python main.py
 ```
 
-#### 指定项目需求
+#### Specify project requirements
 
 ```bash
-python main.py --project-idea "开发一个在线图书管理系统，支持图书借阅、归还、查询等功能"
+python main.py --project-idea "Develop an online library management system supporting book borrowing, return, query, and other features"
 ```
 
-#### 指定项目代号
+#### Specify a project code
 
 ```bash
 python main.py --project-code "PROJ_LIBRARY_001"
 ```
 
-### 查看结果
+### View Results
 
-运行完成后，所有交付物会保存在：
+After the run completes, all deliverables are saved to:
 
 ```
-simulation/{项目代号}/deliverables/
+simulation/{project_code}/deliverables/
 ```
 
-包含的文件：
-- **项目章程.md** - 项目章程文档
-- **会议记录_*.md** - 各阶段会议记录
-- **WBS.md** - 工作分解结构
-- **成本管理计划.md** - 成本管理计划
-- **范围管理计划.md** - 范围管理计划
-- **进度管理计划.md** - 进度管理计划
-- **EVM报告_循环*.md** - 挣值分析报告
-- **项目总结报告.md** - 项目总结
-- **最终验收意见.md** - 验收意见
-- **代码文件（*.py等）** - 项目代码
-- **project_data.json** - 完整项目数据
+Including:
+- **项目章程.md** - Project charter document
+- **会议记录_*.md** - Meeting minutes for each phase
+- **WBS.md** - Work breakdown structure
+- **成本管理计划.md** - Cost management plan
+- **范围管理计划.md** - Scope management plan
+- **进度管理计划.md** - Schedule management plan
+- **EVM报告_循环*.md** - Earned value analysis reports
+- **项目总结报告.md** - Project summary report
+- **最终验收意见.md** - Final acceptance opinion
+- **Code files (e.g., *.py)** - Project code
+- **project_data.json** - Complete project data
 
-## LLM配置
+## LLM Configuration
 
-系统使用外部大模型API进行智能体模拟。配置信息在 `config.py` 中：
+The system uses external LLM APIs for agent simulation. The configuration lives in `config.py`:
 
 ```python
 LLM_CONFIG = {
@@ -173,129 +173,129 @@ LLM_CONFIG = {
 }
 ```
 
-如需使用其他模型，请修改此配置。
+To use a different model, modify this configuration.
 
-## 技术亮点
+## Technical Highlights
 
-### 1. 智能体架构
+### 1. Agent Architecture
 
-- **BaseAgent基类**：提供统一的接口和记忆管理
-- **角色专业化**：每个智能体有专门的系统提示词和行为逻辑
-- **记忆系统**：
-  - 短期记忆：对话历史
-  - 工作记忆：任务相关临时信息
-  - 长期记忆：通过共享数据库访问
+- **BaseAgent base class**: provides a unified interface and memory management
+- **Role specialization**: each agent has dedicated system prompts and behavior logic
+- **Memory system**:
+  - Short-term memory: conversation history
+  - Working memory: task-related temporary information
+  - Long-term memory: accessed through the shared database
 
-### 2. 共享数据库
+### 2. Shared Database
 
-- 集中式数据存储
-- 支持各类项目数据：文档、代码、会议记录、讨论记录等
-- 提供查询接口，智能体可按需访问
-- 支持导出为JSON格式
+- Centralized data storage
+- Supports all kinds of project data: documents, code, meeting minutes, discussion records, etc.
+- Provides query interfaces that agents can access on demand
+- Supports export to JSON format
 
-### 3. 工作流引擎
+### 3. Workflow Engine
 
-- 严格按照项目管理流程执行
-- 支持阶段间的数据传递
-- 循环执行机制（执行-控制循环）
-- 决策逻辑（项目发起人是否接受）
+- Strictly follows the project management workflow
+- Supports data transfer between phases
+- Loop execution mechanism (execution-control loop)
+- Decision logic (whether the project sponsor accepts)
 
-### 4. 文档生成
+### 4. Document Generation
 
-- 自动生成标准化项目文档
-- Markdown格式，易于阅读
-- 包含时间戳和签字栏
-- 符合项目管理规范
+- Automatically generates standardized project documents
+- Markdown format, easy to read
+- Includes timestamps and signature blocks
+- Complies with project management standards
 
-### 5. 挣值分析（EVM）
+### 5. Earned Value Analysis (EVM)
 
-- 计算关键指标：PV、EV、AC、CV、SV、CPI、SPI
-- 自动生成分析报告
-- 用于跟踪项目绩效
+- Computes key metrics: PV, EV, AC, CV, SV, CPI, SPI
+- Automatically generates analysis reports
+- Used to track project performance
 
-## 注意事项
+## Notes
 
-1. **重点是过程模拟**：系统的核心目标是模拟项目管理流程，而不是生成高质量的代码
+1. **Process simulation is the focus**: the core goal of the system is to simulate the project management process, not to generate high-quality code
 
-2. **API调用**：系统需要调用外部LLM API，请确保网络连接正常
+2. **API calls**: the system needs to call external LLM APIs, so please make sure the network connection is working
 
-3. **执行时间**：完整流程可能需要几分钟到十几分钟，具体取决于API响应速度
+3. **Execution time**: a full run may take from a few minutes to over ten minutes, depending on API response speed
 
-4. **错误处理**：如果API调用失败，系统会使用模拟响应继续执行
+4. **Error handling**: if an API call fails, the system continues with a simulated response
 
-5. **可扩展性**：
-   - 可以添加更多智能体角色
-   - 可以自定义项目阶段
-   - 可以修改决策逻辑
+5. **Extensibility**:
+   - More agent roles can be added
+   - Project phases can be customized
+   - Decision logic can be modified
 
-## 示例输出
+## Sample Output
 
-运行系统后，你会看到类似的输出：
+After running the system, you will see output similar to:
 
 ```
 ==============================================================
-开始执行项目生命周期
+Starting project lifecycle execution
 ==============================================================
 
 ==============================================================
-阶段 1/6: 预启动
+Phase 1/6: Pre-initiation
 ==============================================================
 
-[1.1] 项目发起人陈述需求...
+[1.1] The project sponsor states the requirements...
 
-需求描述：
+Requirement description:
 ...
 
-[1.2] 项目经理起草项目章程...
+[1.2] The project manager drafts the project charter...
 
-项目章程：
+Project charter:
 ...
 
-[完成] 预启动阶段完成
+[Done] Pre-initiation phase complete
 
 ==============================================================
-阶段 2/6: 启动
+Phase 2/6: Initiation
 ==============================================================
 
 ...
 ```
 
-## 扩展和定制
+## Extension and Customization
 
-### 添加新的智能体角色
+### Adding a New Agent Role
 
-1. 在 `agents/` 目录创建新的智能体类
-2. 继承 `BaseAgent`
-3. 实现特定的行为方法
-4. 在 `config.py` 添加系统提示词
-5. 在 `workflow/engine.py` 集成到工作流
+1. Create a new agent class in the `agents/` directory
+2. Inherit from `BaseAgent`
+3. Implement the specific behavior methods
+4. Add the system prompt in `config.py`
+5. Integrate it into the workflow in `workflow/engine.py`
 
-### 修改项目阶段
+### Modifying Project Phases
 
-1. 编辑 `config.py` 中的 `PHASES`
-2. 在 `workflow/engine.py` 添加或修改阶段方法
-3. 更新 `run()` 方法的执行逻辑
+1. Edit `PHASES` in `config.py`
+2. Add or modify phase methods in `workflow/engine.py`
+3. Update the execution logic of the `run()` method
 
-### 自定义文档模板
+### Customizing Document Templates
 
-1. 编辑 `utils/document_generator.py`
-2. 修改或添加文档生成方法
-3. 自定义Markdown模板
+1. Edit `utils/document_generator.py`
+2. Modify or add document generation methods
+3. Customize the Markdown templates
 
-## 贡献指南
+## Contribution Guide
 
-欢迎提交Issue和Pull Request！
+Issues and Pull Requests are welcome!
 
-## 许可证
+## License
 
 MIT License
 
-## 联系方式
+## Contact
 
-如有问题，请提交Issue或联系开发者。
+If you have any questions, please submit an Issue or contact the developer.
 
 ---
 
-**开发时间**：2025年10月
+**Development time**: October 2025
 
-**版本**：1.0.1
+**Version**: 1.0.1
