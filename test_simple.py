@@ -20,11 +20,11 @@ def test_database():
     db.save_project_charter("这是一个测试项目章程")
     
     # 测试保存约束
-    db.save_constraints(
-        cost="预算10万元",
-        scope="开发一个简单的Web应用",
-        schedule="2个月"
-    )
+    db.save_constraints({
+        "cost": "预算10万元",
+        "scope": "开发一个简单的Web应用",
+        "schedule": "2个月"
+    })
     
     # 测试添加会议记录
     db.save_meeting_record(

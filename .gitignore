@@ -6,6 +6,7 @@ __pycache__/
 .Python
 env/
 venv/
+.venv/
 ENV/
 build/
 develop-eggs/
@@ -28,7 +29,7 @@ wheels/
 .idea/
 *.swp
 *.swo
-*~
+.coze
 
 # Simulation results (可选：如果不想提交模拟结果)
 # simulation/
