@@ -1,12 +1,15 @@
 """
 配置文件：包含系统配置和常量
 """
+import os
 
 # LLM API 配置
+# 支持环境变量覆盖（LLM_BASE_URL / LLM_API_KEY / LLM_MODEL），
+# 避免把密钥写进代码或提交到仓库。
 LLM_CONFIG = {
-    'base_url': 'YOUR_BASE_URL',
-    'api_key': 'YOUR_API_KEY',
-    'model': 'YOUR_MODEL'
+    'base_url': os.environ.get('LLM_BASE_URL', 'YOUR_BASE_URL'),
+    'api_key': os.environ.get('LLM_API_KEY', 'YOUR_API_KEY'),
+    'model': os.environ.get('LLM_MODEL', 'YOUR_MODEL')
 }
 
 # 项目阶段定义

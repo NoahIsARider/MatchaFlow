@@ -130,6 +130,13 @@ The simulation runs autonomously through all six phases. Output is saved to `sim
 ├── utils/
 │   ├── llm_client.py          # LLM API client with retry & fallback
 │   └── document_generator.py  # Structured document generation for all deliverables
+├── dao/                         # 🆕 DAO Governance Mode (Proposer/Governor/Member)
+│   ├── dao_config.py             # DAO phases, roles, prompts, LLM config
+│   ├── dao_agents.py             # ProposerAgent, GovernorAgent, MemberAgent
+│   ├── dao_calibration.py        # OnChainGov metric calibration
+│   ├── dao_engine.py             # DAO workflow engine (six governance phases)
+│   ├── dao_main.py               # DAO mode CLI entry point
+│   └── simulation/               # DAO output directory (auto-created per run)
 ├── simulation/                # Output directory (auto-created per run)
 ├── tests/
 │   └── test_all.py            # 86 unit & integration tests
@@ -137,6 +144,50 @@ The simulation runs autonomously through all six phases. Output is saved to `sim
 ├── main.py                    # CLI entry point
 ├── test_simple.py             # Quick smoke test
 └── requirements.txt           # Dependencies
+```
+
+## DAO Governance Mode
+
+MatchaFlow also simulates **decentralized governance** — three LLM agents run a governance proposal through community discussion, mechanism design, execution, and review. It reuses the same engine patterns (six phases, review-only cycles, acceptance loops) with a governance vocabulary.
+
+**Role mapping:**
+
+| PM Mode | DAO Mode | Responsibilities |
+|---------|----------|------------------|
+| Sponsor | **Proposer** (提案人) | States the proposal, joins discussion, reviews & accepts execution |
+| Manager | **Governor** (协调员) | Drafts proposal book, facilitates discussion, designs mechanisms, monitors metrics, compiles retrospective |
+| Team Member | **Member** (成员) | Discusses, executes governance actions (voting, delegation, on-chain ops) |
+
+**Phase mapping:** Pre-initiation → Proposal · Initiation → Community Discussion · Planning → Governance Design · Execution → Execution (member actions) · Control → Monitoring (participation/concentration analysis) · Closing → Review (retrospective + final acceptance).
+
+**OnChainGov calibration:** feed empirical DAO metrics into the simulation via a parquet file (e.g. `snapshot_space_a_participation.parquet` from the OnChainGov toolchain). Low participation lowers member engagement; high concentration triggers anti-concentration designs (delegation caps, quadratic voting, anti-sybil measures). Skip with `--no-calibration`.
+
+```bash
+# Configure LLM (env vars avoid committing secrets)
+export LLM_BASE_URL=https://api-inference.modelscope.cn/v1
+export LLM_API_KEY=your-key
+export LLM_MODEL=Qwen/Qwen3.8-27B
+
+# Basic run
+python3 dao/dao_main.py --proposal-idea "Introduce delegated voting to raise participation"
+
+# Calibrated with real OnChainGov metrics
+python3 dao/dao_main.py --proposal-idea "Introduce delegated voting" \
+    --calibration-path ../onchaingov/data/indicators/snapshot_space_a_participation.parquet
+```
+
+Output artifacts (under `dao/simulation/DAO_<timestamp>/deliverables/`):
+
+```
+├── 治理提案书.md              # Governance Proposal
+├── 会议记录_社区讨论.md        # Community Discussion Minutes
+├── 治理参数.md                # Governance Parameters (budget/scope/timeline)
+├── 治理设计书.md              # Governance Design (voting mechanism, params, safety)
+├── 执行行动_第N轮.md           # Member Actions (per cycle)
+├── 监控报告_第N轮.md           # Monitoring Reports (per cycle)
+├── 治理复盘报告.md            # Governance Retrospective
+├── 最终验收意见.md            # Final Acceptance Opinion
+└── dao_data.json             # Complete structured data export
 ```
 
 ## Simulation Output

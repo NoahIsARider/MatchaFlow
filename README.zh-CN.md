@@ -127,6 +127,13 @@ python main.py
 ├── utils/
 │   ├── llm_client.py          # LLM API 客户端（重试 & 降级）
 │   └── document_generator.py  # 结构化文档生成器
+├── dao/                         # 🆕 DAO 治理模式（提案人/协调员/成员）
+│   ├── dao_config.py             # DAO 阶段、角色、提示词、LLM 配置
+│   ├── dao_agents.py             # ProposerAgent / GovernorAgent / MemberAgent
+│   ├── dao_calibration.py        # OnChainGov 实证指标校准
+│   ├── dao_engine.py             # DAO 工作流引擎（六阶段治理）
+│   ├── dao_main.py               # DAO 模式 CLI 入口
+│   └── simulation/               # DAO 输出目录（每次运行自动创建）
 ├── simulation/                # 输出目录（每次运行自动创建）
 ├── tests/
 │   └── test_all.py            # 86 个单元 & 集成测试
@@ -134,6 +141,50 @@ python main.py
 ├── main.py                    # CLI 入口
 ├── test_simple.py             # 快速冒烟测试
 └── requirements.txt           # 依赖声明
+```
+
+## DAO 治理模式
+
+MatchaFlow 同时支持 **DAO 去中心化治理模拟**——三个 LLM 智能体将治理提案完整跑过社区讨论、机制设计、执行与复盘。复用同一套引擎模式（六阶段、review-only 循环、验收机制），但换成治理语境。
+
+**角色映射：**
+
+| 项目管理模式 | DAO 模式 | 职责 |
+|------------|----------|------|
+| 发起人 | **提案人 Proposer** | 陈述提案、参与讨论、评审并验收执行结果 |
+| 项目经理 | **协调员 Governor** | 起草提案书、主持讨论、设计治理机制、监控指标、编制复盘 |
+| 项目组成员 | **社区成员 Member** | 参与讨论、执行治理行动（投票/委托/链上操作） |
+
+**阶段映射：** 预启动→提案发起 · 启动→社区讨论 · 计划→治理设计 · 执行→提案执行（成员行动）· 控制→治理监控（参与度/集中度分析）· 结束→治理复盘（复盘报告+最终验收）。
+
+**OnChainGov 校准：** 可通过 parquet 文件把 OnChainGov 实证指标（如 `snapshot_space_a_participation.parquet`）注入模拟——参与度低会降低成员参与意愿，集中度高会触发反集中设计（委托上限、二次方投票、防女巫）。用 `--no-calibration` 可跳过。
+
+```bash
+# 配置 LLM（环境变量，避免密钥入库）
+export LLM_BASE_URL=https://api-inference.modelscope.cn/v1
+export LLM_API_KEY=你的密钥
+export LLM_MODEL=Qwen/Qwen3.8-27B
+
+# 基础运行
+python3 dao/dao_main.py --proposal-idea "引入委托投票机制，提升社区参与度"
+
+# 接入 OnChainGov 实证指标校准
+python3 dao/dao_main.py --proposal-idea "引入委托投票机制" \
+    --calibration-path ../onchaingov/data/indicators/snapshot_space_a_participation.parquet
+```
+
+交付物（位于 `dao/simulation/DAO_<时间戳>/deliverables/`）：
+
+```
+├── 治理提案书.md              # 治理提案书
+├── 会议记录_社区讨论.md        # 社区讨论会议记录
+├── 治理参数.md                # 治理三大约束（预算/范围/时间线）
+├── 治理设计书.md              # 治理设计（投票机制/参数/安全措施）
+├── 执行行动_第N轮.md           # 成员治理行动（每轮）
+├── 监控报告_第N轮.md           # 治理监控报告（每轮）
+├── 治理复盘报告.md            # 治理复盘报告
+├── 最终验收意见.md            # 最终验收意见
+└── dao_data.json             # 完整结构化数据导出
 ```
 
 ## 模拟输出
