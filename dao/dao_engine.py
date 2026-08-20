@@ -27,9 +27,10 @@ class DAOEngine:
 
     def __init__(self, project_code: str, llm_config: dict,
                  agent_prompts: dict, calibration: Optional[Dict] = None,
-                 proposal_idea: Optional[str] = None):
+                 proposal_idea: Optional[str] = None, max_cycles: int = DAO_MAX_CYCLES):
         self.project_code = project_code
         self.proposal_idea = proposal_idea
+        self.max_cycles = max_cycles
 
         # 校准参数（未提供时用默认）
         self.calibration = calibration or dict(DEFAULT_CALIBRATION)
@@ -81,10 +82,10 @@ class DAOEngine:
             print(f"\n[系统] 执行-监控循环说明：")
             print(f"  - 前2轮为强制 review-only 模式（只提意见，不验收）")
             print(f"  - 从第3轮开始可以进行正式验收")
-            print(f"  - 最多执行 {DAO_MAX_CYCLES} 轮\n")
+            print(f"  - 最多执行 {self.max_cycles} 轮\n")
 
             accepted = False
-            for cycle in range(1, DAO_MAX_CYCLES + 1):
+            for cycle in range(1, self.max_cycles + 1):
                 self.shared_db.start_execution_cycle(cycle)
 
                 self.phase_execution(cycle)
@@ -112,8 +113,8 @@ class DAOEngine:
                     if accepted:
                         print(f"[提案人] ✓ 接受第{cycle}轮成果，进入治理复盘阶段\n")
                         break
-                    if cycle < DAO_MAX_CYCLES:
-                        print(f"[系统] ✗ 被拒绝，剩余 {DAO_MAX_CYCLES - cycle} 轮\n")
+                    if cycle < self.max_cycles:
+                        print(f"[系统] ✗ 被拒绝，剩余 {self.max_cycles - cycle} 轮\n")
                         member_response = self.member.discuss_with_proposer(cycle, feedback)
                         print(f"[成员] {member_response}\n")
                         self._save_discussion('社区成员', '治理提案人',
@@ -195,7 +196,7 @@ class DAOEngine:
 
     def phase_execution(self, cycle: int):
         """阶段4：提案执行"""
-        print(f"\n{'='*60}\n阶段 4/6: {DAO_PHASES['EXECUTION']} (轮次 {cycle}/{DAO_MAX_CYCLES})\n{'='*60}\n")
+        print(f"\n{'='*60}\n阶段 4/6: {DAO_PHASES['EXECUTION']} (轮次 {cycle}/{self.max_cycles})\n{'='*60}\n")
 
         print(f"[4.{cycle}.1] 社区成员模拟执行治理行动...")
         actions = self.member.execute_actions(cycle)
@@ -217,7 +218,7 @@ class DAOEngine:
 
     def phase_monitoring(self, cycle: int):
         """阶段5：治理监控"""
-        print(f"\n{'='*60}\n阶段 5/6: {DAO_PHASES['MONITORING']} (轮次 {cycle}/{DAO_MAX_CYCLES})\n{'='*60}\n")
+        print(f"\n{'='*60}\n阶段 5/6: {DAO_PHASES['MONITORING']} (轮次 {cycle}/{self.max_cycles})\n{'='*60}\n")
 
         print(f"[5.{cycle}.1] 治理协调员进行治理监控分析...")
         metrics = self.governor.perform_monitoring_analysis(cycle)

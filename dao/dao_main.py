@@ -40,6 +40,8 @@ def main():
                         help='OnChainGov 指标 parquet 路径（可选，用于校准模拟参数）')
     parser.add_argument('--no-calibration', action='store_true',
                         help='强制跳过 OnChainGov 校准（使用默认参数）')
+    parser.add_argument('--max-cycles', type=int, default=None,
+                        help='执行-监控循环最大轮数（默认 5，前 2 轮 review-only）')
     args = parser.parse_args()
 
     project_code = args.project_code if args.project_code else generate_project_code()
@@ -64,7 +66,8 @@ def main():
         llm_config=LLM_CONFIG,
         agent_prompts=DAO_AGENT_PROMPTS,
         calibration=calibration,
-        proposal_idea=args.proposal_idea
+        proposal_idea=args.proposal_idea,
+        max_cycles=args.max_cycles if args.max_cycles else 5
     )
 
     engine.run()

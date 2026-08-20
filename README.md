@@ -163,6 +163,11 @@ MatchaFlow also simulates **decentralized governance** — three LLM agents run 
 
 **OnChainGov calibration:** feed empirical DAO metrics into the simulation via a parquet file (e.g. `snapshot_space_a_participation.parquet` from the OnChainGov toolchain). Low participation lowers member engagement; high concentration triggers anti-concentration designs (delegation caps, quadratic voting, anti-sybil measures). Skip with `--no-calibration`.
 
+> 📄 **Case study:** [docs/dao-case-study.md](docs/dao-case-study.md) — calibrated simulation
+> on real ENS DAO data (Snapshot, 90 days): effective voters ≈ 8.9 / 124 (Gini 0.897),
+> a low-participation counterfactual that fails quorum and is rejected, and a
+> no-calibration counterfactual that designs without empirical anchor.
+
 ```bash
 # Configure LLM (env vars avoid committing secrets)
 export LLM_BASE_URL=https://api-inference.modelscope.cn/v1
