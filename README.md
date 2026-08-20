@@ -63,6 +63,7 @@ Each phase has a clear entry criteria, defined interactions between agents, and 
 - **Iterative execution loops** — Code-review-reject cycles with feedback-driven improvement until acceptance
 - **Nine deliverable types** — Project charter, WBS, schedule/cost/scope management plans, meeting minutes, EVM reports, NPV analyses, critical path & chain analyses, and final summary
 - **Any OpenAI-compatible LLM** — Works with OpenAI, DeepSeek, Ollama, vLLM, or any compatible endpoint
+- **DAO Governance Mode** — Same engine, governance vocabulary: Proposer/Governor/Member agents run a proposal through discussion, mechanism design, execution & monitoring, and review, calibrated by real OnChainGov metrics ([docs](README.md#dao-governance-mode))
 - **Shared knowledge base** — SQLite-backed shared database ensures all agents operate on consistent project state
 - **Full audit trail** — Every meeting, discussion, decision, and deliverable is recorded with timestamps
 - **Graceful degradation** — LLM failures produce fallback responses; the simulation continues
